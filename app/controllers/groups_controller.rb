@@ -1,6 +1,7 @@
 class GroupsController < ApplicationController
-
+  before_action :authenticate_user!, except: [:index]
   before_action :find_group, except: [:index, :new, :create]
+  before_action :is_admin_of, only: [:edit, :update, :destroy]
   def index
     @groups = Group.all
   end
@@ -17,7 +18,9 @@ class GroupsController < ApplicationController
 
   def create
     @group = Group.new(group_params)
+    @group.user = current_user
     if @group.save
+      @group.user.admin!(@group)
       redirect_to "/"
     else
       render :new
@@ -36,7 +39,6 @@ class GroupsController < ApplicationController
     @group.destroy
     redirect_to "/"
   end
-
   private
 
   def group_params
@@ -45,5 +47,13 @@ class GroupsController < ApplicationController
 
   def find_group
     @group = Group.find(params[:id])
+  end
+
+  def is_admin_of
+    @group = Group.find(params[:id])
+    if !current_user.is_admin_of?(@group)
+      flash[:alert] = "你不是主持人，无权操作！"
+      redirect_to :back
+    end
   end
 end

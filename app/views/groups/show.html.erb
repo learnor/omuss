@@ -1,6 +1,13 @@
 <div class="col-md-12">
   <div class="group">
+    <span class="pull-right">
+      <% if current_user && current_user.is_admin_of?(@group) %>
+        <label class="label label-success"> 主持人 </label>
+      <% end %>
+    </span>
+  <% if current_user && current_user.is_admin_of?(@group) %>
     <%= link_to("Edit", edit_group_path(@group), class: "btn btn-primary pull-right")%>
+  <% end %>  
   </div>
   <h2><%= @group.title %></h2>
   <p><%= @group.description %></p>
