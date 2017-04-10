@@ -1,0 +1,9 @@
+<%= simple_form_for @group do |f| %>
+  <div class="form-group">
+    <%= f.input :title, :label => "标题", input_html: { class: "form-control"} %>
+    <%= f.input :description, :label => "描述", input_html: { class: "form-control"} %>
+    <%= f.input :room, :label => "房间号", input_html: { class: "form-control"} %>
+    <%= f.input :password, :label => "密码", input_html: { class: "form-control"} %>
+  </div>
+  <%= f.submit "Submit", class: "btn btn-primary", data: { disable_with: "Submiting..." } %>
+<% end %>
